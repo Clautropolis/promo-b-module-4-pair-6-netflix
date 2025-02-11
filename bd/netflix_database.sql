@@ -39,7 +39,31 @@ insert into actors (name, lastname, country, birthday) values
 ("Roberto", "Benigni", "Italia", "1952-10-27"),
 ("John", "Travolta", "Estados Unidos", "1954-02-18");
 
-select * from 
+select * from movies;
+select name, genre from movies where year > 1990;
+select genre from movies where year > 1990;
+select title, genre from movies where year > 1990;
+select * from movies where category= "Top 10";
+
+UPDATE movies SET year = 1997 where ideMovies = 2;
+UPDATE movies SET year = 1997 where idMovies = 2;
+select * from movies;
+select * from actors;
+select * from actors where birthday between 1950 and 1960;
+select * from actors where birthday between "1950-01-01" and "1960-12-31";
+select name, lastname from actors where country = "Estados Unidos";
+
+select * from users;
+select * from users where plan_details = "Standard";
+DELETE FROM users where name like "M%";
+USE Netflix;
+
+
+
+
+
+
+
 
 
 
