@@ -1,5 +1,7 @@
+DROP DATABASE Netflix;
 CREATE DATABASE Netflix;
 USE Netflix;
+
 CREATE TABLE movies (
 	idMovies int auto_increment primary key,
     title VARCHAR(45) not null,
@@ -24,6 +26,34 @@ CREATE TABLE actors (
     birthday date
 );
 
+SELECT actors.name, movies.title
+FROM actors, movies, movies_actors
+WHERE actors.idActor = movies_actors.fk_actors
+AND movies.idMovies = movies_actors.fk_movies;
+
+CREATE TABLE movies_actors (
+	fk_movies INT NOT NULL,
+    fk_actors INT NOT NULL,
+    id_movies_actors INT AUTO_INCREMENT PRIMARY KEY,
+    CONSTRAINT fk_movies_actors
+    FOREIGN KEY (fk_movies) REFERENCES movies (idMovies),
+    CONSTRAINT fk_actors_movies
+    FOREIGN KEY (fk_actors) REFERENCES actors (idActor)
+);
+
+CREATE TABLE favotie_movies (
+	fk_movies INT NOT NULL,
+	fk_users INT NOT NULL,
+	id_favorite_movies INT AUTO_INCREMENT PRIMARY KEY,
+    CONSTRAINT fk_movies_users
+    FOREIGN KEY (fk_movies) REFERENCES movies (idMovies),
+	CONSTRAINT fk_users_movies
+    FOREIGN KEY (fk_users) REFERENCES users (idUser)
+);
+
+ALTER TABLE favotie_movies RENAME favorite_movies;
+
+
 insert into movies (title, genre, image, category, year) values
 ("Pulp Fiction", "Crimen", "https://pics.filmaffinity.com/pulp_fiction-210382116-large.jpg", "Top 10",1994 ),
 ("La vita è bella", "Comedia", "https://pics.filmaffinity.com/la_vita_e_bella-646167341-mmed.jpg", "Top 10",1996 ),
@@ -38,6 +68,8 @@ insert into actors (name, lastname, country, birthday) values
 ("Tom", "Hanks", "Estados Unidos", "1956-07-09"),
 ("Roberto", "Benigni", "Italia", "1952-10-27"),
 ("John", "Travolta", "Estados Unidos", "1954-02-18");
+
+
 
 select * from movies;
 select name, genre from movies where year > 1990;
@@ -57,7 +89,6 @@ select * from users;
 select * from users where plan_details = "Standard";
 DELETE FROM users where name like "M%";
 USE Netflix;
-
 
 
 
