@@ -41,7 +41,7 @@ CREATE TABLE movies_actors (
     FOREIGN KEY (fk_actors) REFERENCES actors (idActor)
 );
 
-CREATE TABLE favotie_movies (
+CREATE TABLE favorite_movies (
 	fk_movies INT NOT NULL,
 	fk_users INT NOT NULL,
 	id_favorite_movies INT AUTO_INCREMENT PRIMARY KEY,
@@ -50,6 +50,8 @@ CREATE TABLE favotie_movies (
 	CONSTRAINT fk_users_movies
     FOREIGN KEY (fk_users) REFERENCES users (idUser)
 );
+
+ALTER TABLE favorite_movies ADD COLUMN score TINYINT;
 
 ALTER TABLE favotie_movies RENAME favorite_movies;
 
@@ -89,6 +91,16 @@ select * from users;
 select * from users where plan_details = "Standard";
 DELETE FROM users where name like "M%";
 USE Netflix;
+
+SELECT COUNT(fk_movies), users.name
+FROM favorite_movies INNER JOIN users
+ON users.idUser = favorite_movies.fk_users
+GROUP BY fk_users;
+
+SELECT MAX(fk_movies) AS max_fav_movies, users.name
+FROM favorite_movies INNER JOIN users
+ON users.idUser = favorite_movies.fk_movies
+GROUP BY fk_movies;
 
 
 
