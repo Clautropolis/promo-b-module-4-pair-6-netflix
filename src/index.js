@@ -16,8 +16,8 @@ async function connectDB(){
   const conex = await mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: '#Claugala2024',
-    database: 'Netflix',
+    password: 'Usera.2025',
+    database: 'netflix',
   });
   //Conectarnos
   conex.connect();
@@ -30,6 +30,7 @@ server.listen(serverPort, () => {
   console.log(`Server listening at http://localhost:${serverPort}`);
 });
 
+//endpoint
 server.get ('/movies', async (req, res) => {
   try {
   const connection = await connectDB();
@@ -41,7 +42,7 @@ server.get ('/movies', async (req, res) => {
     if(result.length === 0) {
       res.status(404).json({
         success: false,
-        message: 'No se encontró la película',
+        movies: 'No se encontró la película',
     })
     } else {
       res.status(200).json({
@@ -53,7 +54,7 @@ server.get ('/movies', async (req, res) => {
     console.log(error);
     res.status(500).json({
       success: false,
-      message: error,
+      movies: error,
     });
   }
 });
