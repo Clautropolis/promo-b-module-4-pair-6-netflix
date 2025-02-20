@@ -36,9 +36,11 @@ server.get ('/movies', async (req, res) => {
   try {
   const connection = await connectDB();
   const genreFilterParam = req.query.genre;
+  const sortFilterPram = req.query.sort;
   console.log(genreFilterParam);
-  const sqlSelect = 'SELECT * FROM movies';
-  const sqlGenre = `SELECT * FROM movies WHERE genre LIKE ?`;
+  const sqlSelect = `SELECT * FROM movies ORDER BY title ${sortFilterPram}`;
+  const sqlGenre = `SELECT * FROM movies WHERE genre LIKE ? ORDER BY title ${sortFilterPram} `;
+
   if (genreFilterParam !== ""){
     sqlGenre;
   } else {
