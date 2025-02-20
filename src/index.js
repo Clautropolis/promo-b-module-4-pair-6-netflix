@@ -37,19 +37,25 @@ server.get ('/movies', async (req, res) => {
   const connection = await connectDB();
   const genreFilterParam = req.query.genre;
   console.log(genreFilterParam);
-
+  const sqlSelect = 'SELECT * FROM movies';
   const sqlGenre = `SELECT * FROM movies WHERE genre LIKE ?`;
-  const [result] = await connection.query(sqlGenre, [`%${genreFilterParam}%`]);
+  if (genreFilterParam !== ""){
+    sqlGenre;
+  } else {
+    sqlSelect;
+  }
 
-  // const sqlSelect = 'SELECT * FROM movies';
-  // const [result] = await connection.query(sqlSelect);
+  const [result] = await connection.query(sqlGenre, [genreFilterParam]);
+  const [allMovies] = await connection.query(sqlSelect);
+
+
   connection.end();
   console.log(result);
 
     if(result.length === 0) {
       res.status(404).json({
         success: false,
-        movies: 'No se encontró la película',
+        movies: allMovies,
     })
     } else {
       res.status(200).json({
