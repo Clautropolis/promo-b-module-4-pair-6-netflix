@@ -1,4 +1,4 @@
-DROP DATABASE Netflix;
+
 CREATE DATABASE Netflix;
 USE Netflix;
 
@@ -102,7 +102,8 @@ FROM favorite_movies INNER JOIN users
 ON users.idUser = favorite_movies.fk_movies
 GROUP BY fk_movies;
 
-
+insert into movies (title, genre, image, category, year) values
+("Titanic", "Drama", "https://pics.filmaffinity.com/titanic-321994924-mmed.jpg", "Top 10",1997 );
 
 
 
