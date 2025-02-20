@@ -30,12 +30,19 @@ server.listen(serverPort, () => {
   console.log(`Server listening at http://localhost:${serverPort}`);
 });
 
-//endpoint
+//Endpoint
 server.get ('/movies', async (req, res) => {
+  console.log(req.query);
   try {
   const connection = await connectDB();
-  const sqlSelect = 'SELECT * FROM movies';
-  const [result] = await connection.query(sqlSelect);
+  const genreFilterParam = req.query.genre;
+  console.log(genreFilterParam);
+
+  const sqlGenre = `SELECT * FROM movies WHERE genre LIKE ?`;
+  const [result] = await connection.query(sqlGenre, [`%${genreFilterParam}%`]);
+
+  // const sqlSelect = 'SELECT * FROM movies';
+  // const [result] = await connection.query(sqlSelect);
   connection.end();
   console.log(result);
 
