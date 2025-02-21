@@ -16,7 +16,7 @@ async function connectDB(){
   const conex = await mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: 'Usera.2025',
+    password: '#Claugala2024',
     database: 'netflix',
   });
   //Conectarnos
@@ -36,40 +36,39 @@ server.get ('/movies', async (req, res) => {
   try {
   const connection = await connectDB();
   const genreFilterParam = req.query.genre;
-  const sortFilterPram = req.query.sort;
+  const sortFilterParam = req.query.sort;
+  console.log(sortFilterParam);
   console.log(genreFilterParam);
-  const sqlSelect = `SELECT * FROM movies ORDER BY title ${sortFilterPram}`;
-  const sqlGenre = `SELECT * FROM movies WHERE genre LIKE ? ORDER BY title ${sortFilterPram} `;
+  let sql = ''
+  
 
   if (genreFilterParam !== ""){
-    sqlGenre;
+    sql = `SELECT * FROM movies WHERE genre LIKE ? ORDER BY title ${sortFilterParam} `;
+    
+
   } else {
-    sqlSelect;
+    sql = `SELECT * FROM movies ORDER BY title ${sortFilterParam}`;
+    
+
   }
 
-  const [result] = await connection.query(sqlGenre, [genreFilterParam]);
-  const [allMovies] = await connection.query(sqlSelect);
-
+  
+  const [result] = await connection.query(sql, [genreFilterParam]);
+ 
 
   connection.end();
   console.log(result);
 
-    if(result.length === 0) {
-      res.status(404).json({
-        success: false,
-        movies: allMovies,
-    })
-    } else {
       res.status(200).json({
           success: true,
           movies:  result
-    })
-    };
+    });
+    
   } catch (error) {
     console.log(error);
     res.status(500).json({
       success: false,
-      movies: error,
+      message: error,
     });
   }
 });
