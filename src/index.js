@@ -10,6 +10,7 @@ const server = express();
 
 server.use(cors());
 server.use(express.json({limit: '25mb'}));
+server.set('view engine', 'ejs');
 
 //Crear la conexión
 async function connectDB(){
@@ -41,21 +42,14 @@ server.get ('/movies', async (req, res) => {
   console.log(genreFilterParam);
   let sql = ''
   
-
   if (genreFilterParam !== ""){
     sql = `SELECT * FROM movies WHERE genre LIKE ? ORDER BY title ${sortFilterParam} `;
-    
-
   } else {
     sql = `SELECT * FROM movies ORDER BY title ${sortFilterParam}`;
-    
-
   }
-
   
   const [result] = await connection.query(sql, [genreFilterParam]);
  
-
   connection.end();
   console.log(result);
 
@@ -63,7 +57,7 @@ server.get ('/movies', async (req, res) => {
           success: true,
           movies:  result
     });
-    
+
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -73,5 +67,19 @@ server.get ('/movies', async (req, res) => {
   }
 });
 
+server.get('/movie/:movieId', async (req, res) => {
+  const connection = await connectDB();
+  console.log(req.params);
+  const idMovie = req.params.movieId;
+  console.log(idMovie);
+
+  const foundMovies = `SELECT * FROM movies WHERE idMovies = ${idMovie}`;
+  const [foundMoviesResult] = await connection.query(foundMovies);
+  console.log(foundMoviesResult);
+
+  res.render('movie')
+});
 
 
+
+//Servidor estático
