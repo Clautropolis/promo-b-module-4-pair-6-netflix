@@ -82,4 +82,6 @@ server.get('/movie/:movieId', async (req, res) => {
 
 
 
-//Servidor estático
+//Servidor de estáticos
+const staticServerPath = "./src/public-react";
+server.use(express.static(staticServerPath));
