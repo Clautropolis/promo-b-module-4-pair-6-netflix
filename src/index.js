@@ -7,6 +7,7 @@ const mysql = require('mysql2/promise');
 
 // create and config server
 const server = express();
+require('dotenv').config();
 
 server.use(cors());
 server.use(express.json({limit: '25mb'}));
@@ -15,10 +16,11 @@ server.set('view engine', 'ejs');
 //Crear la conexión
 async function connectDB(){
   const conex = await mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '#Claugala2024',
-    database: 'netflix',
+    host: process.env.HOST_DB, 
+    user: process.env.USER_DB,
+    password: process.env.PASS_DB,
+    database: process.env.DATABASE,
+    
   });
   //Conectarnos
   conex.connect();
