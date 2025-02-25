@@ -79,7 +79,36 @@ server.get('/movie/:movieId', async (req, res) => {
   res.render('movie', {movie : foundMoviesResult [0]});
 });
 
+server.post ("/api/signup", async (req, res)=>{
+  const connection = await connectDB();
+// recibimos los datos de la usuaria desde el front
+  const {email, password} = req.body;
+// comprobamos si esos existen o no
+  const selectEmail = 'SELECT email FROM users WHERE email = ? ';
+  const [emailResult] = await connection.query(selectEmail, [email])
+  try {
+     //si el usuario no existe se añade, 
+  if (emailResult.length === 0){
+    const passwordEncryp = await bcrypt.hash (password, 10)
+    const sqlInsertUser = 'INSERT INTO users (email, password) values (?, ?)';
+    const [result] = await connection.query(sqlInsertUser, [email, passwordEncryp]);
+    res.status (200).json ({ success:true, id: result.insertId});
+    
+  } else{
+    res.status (400).json ({ success:false, menssage: 'Usuario ya existe'});
+  }
+    
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: error,
+  })  
+  }
+ 
 
+
+})
 
 //Servidor de estáticos
 const staticServerPath = "./src/public-react";
